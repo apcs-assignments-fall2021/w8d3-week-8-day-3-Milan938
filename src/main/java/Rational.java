@@ -21,7 +21,86 @@ public class Rational
     // You should go ahead and copy and paste the methods
     // from last class into here:
     // *****
+    public static Rational add(Rational r, Rational s) {
+        int num1 = (r.numerator);
+        int den2 = (r.denominator);
+        int num3 = (s.numerator);
+        int den4 = (s.denominator);
+        int realnum1 = den4 * num1;
+        int realnum2 = den2 * num3;
+        int newnum = realnum1 + realnum2;
+        int realden = den4 * den2;
+        Rational t = new Rational(newnum, realden);
+        Rational real = (simplify(t));
+        return real;
 
+    }
+
+    // This method takes two Rationals, subtracts thems up,
+    // and returns a Rational equal to the difference
+    public static Rational subtract(Rational r, Rational s) {
+        int num1 = (r.numerator);
+        int den2 = (r.denominator);
+        int num3 = (s.numerator);
+        int den4 = (s.denominator);
+        int realnum1 = den4 * num1;
+        int realnum2 = den2 * num3;
+        int newnum = realnum1 - realnum2;
+        int realden = den4 * den2;
+        Rational t = new Rational(newnum, realden);
+        Rational real = (simplify(t));
+        return real;
+    }
+
+    public static Rational multiply(Rational r, Rational s) {
+        int num1 = (r.numerator);
+        int den2 = (r.denominator);
+        int num3 = (s.numerator);
+        int den4 = (s.denominator);
+        int realnum = num1 * num3;
+        int realden = den2 * den4;
+        Rational t = new Rational(realnum, realden);
+        Rational real = (simplify(t));
+        return real;
+
+    }
+
+    public static Rational divide(Rational r, Rational s) {
+        int num1 = (r.numerator);
+        int den2 = (r.denominator);
+        int num3 = (s.numerator);
+        int den4 = (s.denominator);
+        int realnum = num1 * den4;
+        int realden = den2 * num3;
+        Rational t = new Rational(realnum, realden);
+        Rational real = (simplify(t));
+        return real;
+    }
+
+    // Finds the greatest common factor between a and b
+    // To find the greatest common factor, find the largest number x
+    // such that a and b are both multiples of x
+    public static int greatestCommonFactor(int a, int b){
+        for(int i = a; i > 0; i--) {
+            if(a % i == 0 && b % i == 0) {
+                return i;
+            }
+        }
+        return 1;
+    }
+
+    // This method is given a rational, and returns a simplified version
+    // of the input rational
+    // Use the greatestCommonFactor method here
+    // e.g. simplify(2/4) => 1/2
+    //      simplify(1/2) => 1/2
+    public static Rational simplify(Rational r) {
+        int gcf = greatestCommonFactor(r.numerator, r.denominator);
+        int newnum = r.numerator / gcf;
+        int newden = r.denominator / gcf;
+        Rational t = new Rational(newnum, newden);
+        return t;
+    }
 
 
 
@@ -53,7 +132,10 @@ public class Rational
     // Rational r = new Rational(6,12);
     // System.out.println(r.isSimplified()) // false
     public boolean isSimplified() {
-        return false; // YOUR CODE HERE
+        if (greatestCommonFactor(this.numerator, this.denominator) != 1) {
+            return false;
+        }
+        return true;
     }
 
     // Calculates the double value of our Rational
@@ -61,7 +143,9 @@ public class Rational
     // Rational r = new Rational(3,4);
     // System.out.println(r.calculateDecimalValue()) // 0.75
     public double calculateDecimalValue() {
-        return 0.0; // YOUR CODE HERE
+        double num = (double) (this.numerator);
+        double div = (num / this.denominator);
+        return div;
     }
 
     // Returns the Rational we get from raising the rational number to an integer power
@@ -69,7 +153,7 @@ public class Rational
     // Rational r = new Rational(2,5);
     // System.out.println(r.pow(2)) // 4/25
     public Rational pow(int exponent) {
-        return null; // YOUR CODE HERE
+        return null;
     }
 
     // Checks to see if either the numerator or denominator match a given number
@@ -77,7 +161,10 @@ public class Rational
     // Rational r = new Rational(3,4);
     // System.out.println(r.contains(3)) // true
     public boolean contains(int x) {
-        return false; // YOUR CODE HERE
+        if (x == this.numerator || x == this.denominator) {
+            return true;
+        }
+        return false;
     }
 
     // This returns a string representation of a Rational (e.g. "1/2")
@@ -135,7 +222,7 @@ public class Rational
     // Rational r = new Rational(3, 5);
     // r.increment(); // r is now 8/5
     public void increment() {
-        // YOUR CODE HERE
+        this.numerator = this.numerator + this.denominator;
     }
 
     // Decrements the current value of our Rational (decreases the value
@@ -144,7 +231,7 @@ public class Rational
     // Rational r = new Rational(6, 5);
     // r.decrement(); // r is now 1/5
     public void decrement() {
-        // YOUR CODE HERE
+        this.numerator = this.numerator - this.denominator;
     }
 
     // Given an int input representing the new denominator, changes the
@@ -153,7 +240,16 @@ public class Rational
     // Rational r = new Rational(3, 8);
     // r.changeToEquivalentFraction(64); // r is now 24/64 (which is equivalent to 3/8)
     public void changeToEquivalentFraction(int newDenominator) {
-        // YOUR CODE HERE
+        if(newDenominator > this.denominator) {
+            int mult = newDenominator / this.denominator;
+            this.numerator = this.numerator * mult;
+            this.denominator = this.denominator * mult;
+        }
+        else if(newDenominator < this.denominator) {
+            int divizzy = this.denominator / newDenominator;
+            this.numerator = this.numerator / divizzy;
+            this.denominator = this.denominator / divizzy;
+        }
     }
 
     // **********
@@ -163,8 +259,11 @@ public class Rational
     // Example:
     // Rational r = new Rational(-3,4);
     // System.out.println(r.isNegative()) // true
-    public boolean isNegative() { 
-        return false; // YOUR CODE HERE
+    public boolean isNegative() {
+        if(this.numerator < 0 || this.denominator < 0) {
+            return true;
+        }
+        return false;
     }
 
     // Calculates the reciprocal of a Rational number.
@@ -173,7 +272,9 @@ public class Rational
     // Rational r = new Rational(5,2);
     // System.out.println(r.reciprocal()) // 2/5
     public Rational reciprocal() {
-        return null; // YOUR CODE HERE
+        this.numerator = this.denominator;
+        this.denominator = this.numerator;
+        return null;
     }
 
     // Checks whether the current Rational is the exactly the same as other
@@ -182,7 +283,10 @@ public class Rational
     // Rational s = new Rational(2,4);
     // System.out.println(r.equals(s)) // false
     public boolean equals(Rational other) {
-        return false; // YOUR CODE HERE
+        if (this.numerator == other.numerator && this.denominator == other.denominator) {
+            return true;
+        }
+        return false;
     }
 
     // Rounds the current Rational to the nearest whole number value
